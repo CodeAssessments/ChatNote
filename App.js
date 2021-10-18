@@ -1,38 +1,27 @@
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  StatusBar,
-  View,
-  Text,
-  TouchableOpacity
-} from 'react-native';
+// In App.js in a new project
 
-const App = () => {
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import HomeScreen from "./src/screens/HomeScreen";
+import NoteScreen from "./src/screens/NoteScreen";
+
+const Stack = createNativeStackNavigator();
+
+function App() {
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <StatusBar />
-      <View style={styles.container}>
-        <TouchableOpacity style={styles.addButton}>
-          <Text style={{fontSize: 18, color: "#000"}}>Add Note</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator 
+        initialRouteName="Home"
+        /*screenOptions={{
+          headerShown: false
+        }}*/
+      >
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Note" component={NoteScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'flex-end'
-  },
-  addButton: {
-    backgroundColor: "#39CCCC",
-    margin: 20,
-    padding: 20,
-    borderRadius: 10,
-  }
-});
+}
 
 export default App;
