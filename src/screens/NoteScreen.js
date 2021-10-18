@@ -3,16 +3,16 @@ import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, Text } from 'r
 
 const NoteScreen = () => {
     const [input, setInput] = React.useState("");
-    const [notes, setNotes] = React.useState(["test"]);
+    const [notes, setNotes] = React.useState([]);
 
     const addNote = () => {
-        setNotes(notes => [input, ...notes]);
+        setNotes(notes => [...notes, input]);
         setInput("");
     }
 
     const renderItem = ({ item }) => (
         <View style={styles.bubble}>
-            <Text>{ item }</Text>
+            <Text style={{color: "#FFF"}}>{ item }</Text>
         </View>
     );
 
@@ -24,17 +24,20 @@ const NoteScreen = () => {
                 extraData={notes}
                 renderItem={renderItem}
             />
-            <View style={styles.inputArea}>
+            <View 
+                style={styles.inputArea}
+            >
                 <TextInput
                     style={styles.input}
                     onChangeText={setInput}
+                    onSubmitEditing={addNote}
                     value={input}
                 />
                 <TouchableOpacity 
                     style={styles.addButton}
                     onPress={addNote}
                 >
-                <Text style={{fontSize: 18, color: "#000"}}>+</Text>
+                <Text style={{fontSize: 18, color: "#FFF"}}>+</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -59,28 +62,27 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         margin: 12,
-        borderWidth: 1,
         padding: 10,
         borderRadius: 20,
-        flex: 1
+        flex: 1,
+        backgroundColor: "#DDDDDD"
     },
     addButton: {
         height: 40,
         width: 40,
         marginVertical: 12,
         marginRight: 12,
-        borderWidth: 1,
         borderRadius: 20,
         flex: 0,
-        backgroundColor: "#39CCCC",
+        backgroundColor: "#0074D9",
         justifyContent: "center",
         alignContent: "center",
         alignItems: "center"
     },
     bubble: {
-        borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 20,
         margin: 5,
-        padding: 5
+        padding: 10,
+        backgroundColor: "#0074D9"
     }
 })

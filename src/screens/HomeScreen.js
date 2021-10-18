@@ -18,7 +18,7 @@ const HomeScreen = ({ navigation }) => {
           style={styles.addButton}
           onPress={() => navigation.navigate('Note')}
         >
-          <Text style={{fontSize: 18, color: "#000"}}>Add Note</Text>
+          <Text style={{fontSize: 18, color: "#FFF"}}>Add Note</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end'
   },
   addButton: {
-    backgroundColor: "#39CCCC",
+    backgroundColor: "#0074D9",
     margin: 20,
     padding: 20,
     borderRadius: 10,
