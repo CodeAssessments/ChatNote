@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, Text } from 'react-native'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
  
-const NoteScreen = () => {
+const NoteScreen = ({navigation}) => {
     const [input, setInput] = React.useState("");
     const [notes, setNotes] = React.useState([]);
 
@@ -12,6 +12,10 @@ const NoteScreen = () => {
         setNotes(notes => [{id: uuidv4(), text: input}, ...notes]);
         setInput("");
     }
+
+    React.useEffect(() => {
+        navigation.setOptions({ title: "Notes: "+notes.length })
+    }, [notes]);
 
     const editNote = (id) => {
         let item = notes.find(item => item.id === id)
