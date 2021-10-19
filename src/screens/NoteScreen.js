@@ -8,18 +8,18 @@ const NoteScreen = ({navigation}) => {
     const [input, setInput] = React.useState("");
     const [notes, setNotes] = React.useState([]);
 
+    React.useEffect(() => {
+        navigation.setOptions({ title: "Notes: "+notes.length })
+    }, [notes]);
+
     const addNote = () => {
         setNotes(notes => [{id: uuidv4(), text: input}, ...notes]);
         setInput("");
     }
 
-    React.useEffect(() => {
-        navigation.setOptions({ title: "Notes: "+notes.length })
-    }, [notes]);
-
-    const editNote = (id) => {
-        let item = notes.find(item => item.id === id)
-        console.log(item.text);
+    const editNote = (item, index) => {
+        notes[index].text = item.text;
+        setNotes([...notes])
     }
 
     const deleteNote = (id) => {
@@ -27,14 +27,14 @@ const NoteScreen = ({navigation}) => {
         setNotes(filteredData );
     }
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <GestureRecognizer
             onSwipe={() => deleteNote(item.id)}
             config={config}
         >
             <TouchableOpacity onPress={() => editNote(item.id)}>
                 <View style={styles.bubble}>
-                    <Text style={{color: "#FFF"}}>{ item.text }</Text>
+                    <TextInput style={styles.bubbleText} value={item.text} onChangeText={newText => editNote({id: item.id, text: newText}, index)} />
                 </View>
             </TouchableOpacity>
       </GestureRecognizer>
@@ -115,5 +115,9 @@ const styles = StyleSheet.create({
         margin: 5,
         padding: 10,
         backgroundColor: "#0074D9"
+    },
+    bubbleText: {
+        color: "#FFF",
+        padding: 0
     }
 })

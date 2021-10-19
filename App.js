@@ -17,7 +17,7 @@ function App() {
           headerShown: false
         }}*/
       >
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'ChatNote' }}/>
         <Stack.Screen name="Note" component={NoteScreen} />
       </Stack.Navigator>
     </NavigationContainer>
