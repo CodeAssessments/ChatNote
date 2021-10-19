@@ -2,13 +2,14 @@ import React from 'react'
 import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, Text } from 'react-native'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
-
+import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+ 
 const NoteScreen = () => {
     const [input, setInput] = React.useState("");
     const [notes, setNotes] = React.useState([]);
 
     const addNote = () => {
-        setNotes(notes => [...notes, {id: uuidv4(), text: input}]);
+        setNotes(notes => [{id: uuidv4(), text: input}, ...notes]);
         setInput("");
     }
 
@@ -23,24 +24,34 @@ const NoteScreen = () => {
     }
 
     const renderItem = ({ item }) => (
-        <TouchableOpacity
-            onPress={() => editNote(item.id)}
-            onLongPress={() => deleteNote(item.id)}
+        <GestureRecognizer
+            onSwipe={() => deleteNote(item.id)}
+            config={config}
         >
-            <View style={styles.bubble}>
-                <Text style={{color: "#FFF"}}>{ item.text }</Text>
-        </View>
-        </TouchableOpacity>
+            <TouchableOpacity onPress={() => editNote(item.id)}>
+                <View style={styles.bubble}>
+                    <Text style={{color: "#FFF"}}>{ item.text }</Text>
+                </View>
+            </TouchableOpacity>
+      </GestureRecognizer>
     );
+
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
 
     return (
         <View style={styles.container}>
-            <FlatList 
-                contentContainerStyle={styles.list} 
-                data={notes}
-                extraData={notes}
-                renderItem={renderItem}
+            <View style={{flex: 1}}>
+                <FlatList 
+                    inverted
+                    contentContainerStyle={styles.listInside} 
+                    data={notes}
+                    extraData={notes}
+                    renderItem={renderItem}
             />
+            </View>
             <View 
                 style={styles.inputArea}
             >
@@ -67,9 +78,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
-    list: {
-        flex: 1,
-        justifyContent: "flex-end",
+    listInside: {
+        flexGrow: 1,
         alignItems: "flex-end",
         margin: 10
     },
