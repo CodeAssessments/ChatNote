@@ -1,19 +1,36 @@
 import React from 'react'
 import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, Text } from 'react-native'
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const NoteScreen = () => {
     const [input, setInput] = React.useState("");
     const [notes, setNotes] = React.useState([]);
 
     const addNote = () => {
-        setNotes(notes => [...notes, input]);
+        setNotes(notes => [...notes, {id: uuidv4(), text: input}]);
         setInput("");
     }
 
+    const editNote = (id) => {
+        let item = notes.find(item => item.id === id)
+        console.log(item.text);
+    }
+
+    const deleteNote = (id) => {
+        const filteredData = notes.filter(item => item.id !== id);
+        setNotes(filteredData );
+    }
+
     const renderItem = ({ item }) => (
-        <View style={styles.bubble}>
-            <Text style={{color: "#FFF"}}>{ item }</Text>
+        <TouchableOpacity
+            onPress={() => editNote(item.id)}
+            onLongPress={() => deleteNote(item.id)}
+        >
+            <View style={styles.bubble}>
+                <Text style={{color: "#FFF"}}>{ item.text }</Text>
         </View>
+        </TouchableOpacity>
     );
 
     return (
