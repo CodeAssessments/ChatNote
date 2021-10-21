@@ -4,22 +4,30 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import GestureRecognizer from 'react-native-swipe-gestures';
  
-const NoteScreen = ({navigation}) => {
+const NoteScreen = ({navigation, route}) => {
     const [input, setInput] = React.useState("");
     const [notes, setNotes] = React.useState([]);
+    const index = route.params?.index;
 
     React.useEffect(() => {
         navigation.setOptions({ title: "Notes: "+notes.length })
+        if(index !== undefined){
+            console.log(index)
+        }
     }, [notes]);
 
     const addNote = () => {
-        setNotes(notes => [{id: uuidv4(), text: input}, ...notes]);
-        setInput("");
+        if(input){
+            setNotes(notes => [{id: uuidv4(), text: input}, ...notes]);
+            setInput("");
+        }
     }
 
     const editNote = (item, index) => {
-        notes[index].text = item.text;
-        setNotes([...notes])
+        if(notes[index]){
+            notes[index].text = item.text;
+            setNotes([...notes])
+        }
     }
 
     const deleteNote = (id) => {
@@ -32,9 +40,16 @@ const NoteScreen = ({navigation}) => {
             onSwipe={() => deleteNote(item.id)}
             config={config}
         >
-            <TouchableOpacity onPress={() => editNote(item.id)}>
+            <TouchableOpacity 
+                onPress={() => editNote(item.id)}
+            >
                 <View style={styles.bubble}>
-                    <TextInput style={styles.bubbleText} value={item.text} onChangeText={newText => editNote({id: item.id, text: newText}, index)} />
+                    <TextInput 
+                    style={styles.bubbleText} 
+                    value={item.text} 
+                    multiline={true}
+                    onChangeText={newText => editNote({id: item.id, text: newText}, index)} 
+                />
                 </View>
             </TouchableOpacity>
       </GestureRecognizer>
@@ -69,7 +84,7 @@ const NoteScreen = ({navigation}) => {
                     style={styles.addButton}
                     onPress={addNote}
                 >
-                <Text style={{fontSize: 18, color: "#FFF"}}>+</Text>
+                    <Text style={{fontSize: 18, color: "#FFF"}}>+</Text>
                 </TouchableOpacity>
             </View>
         </View>

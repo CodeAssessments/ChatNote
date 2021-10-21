@@ -1,26 +1,20 @@
-// In App.js in a new project
-
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from "./src/screens/HomeScreen";
-import NoteScreen from "./src/screens/NoteScreen";
+import Navigation from './src/navigation/Navigation';
+import {createStore, combineReducers} from 'redux';
+import {Provider} from 'react-redux';
+import noteReducer from './src/store/reducer';
 
-const Stack = createNativeStackNavigator();
+const rootReducer = combineReducers({
+  notes: noteReducer
+})
+
+const store = createStore(rootReducer)
 
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName="Home"
-        /*screenOptions={{
-          headerShown: false
-        }}*/
-      >
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'ChatNote' }}/>
-        <Stack.Screen name="Note" component={NoteScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <Navigation />
+    </Provider>
   );
 }
 
