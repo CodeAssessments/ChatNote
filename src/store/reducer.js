@@ -1,7 +1,13 @@
 import { GET_NOTELIST } from "./action";
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
-    noteList: [["click to edit", "drag to delete"]]
+    noteList: [
+        [
+            {id: uuidv4(), text: "click to edit"},
+            {id: uuidv4(), text: "drag to delete"}
+        ]
+    ]
 };
 
 const noteReducer = (state=initialState, action) => {

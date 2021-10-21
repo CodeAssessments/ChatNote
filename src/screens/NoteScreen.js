@@ -3,17 +3,18 @@ import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, Text } from 'r
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import GestureRecognizer from 'react-native-swipe-gestures';
- 
+import {useSelector} from 'react-redux';
+import NoteItem from '../components/NoteItem';
+import ChatInput from '../components/ChatInput';
+
 const NoteScreen = ({navigation, route}) => {
-    const [input, setInput] = React.useState("");
-    const [notes, setNotes] = React.useState([]);
     const index = route.params?.index;
+    const noteList = useSelector(state => state.notes.noteList[index]) || [];
+    const [input, setInput] = React.useState("");
+    const [notes, setNotes] = React.useState(noteList);
 
     React.useEffect(() => {
         navigation.setOptions({ title: "Notes: "+notes.length })
-        if(index !== undefined){
-            console.log(index)
-        }
     }, [notes]);
 
     const addNote = () => {
@@ -40,17 +41,8 @@ const NoteScreen = ({navigation, route}) => {
             onSwipe={() => deleteNote(item.id)}
             config={config}
         >
-            <TouchableOpacity 
-                onPress={() => editNote(item.id)}
-            >
-                <View style={styles.bubble}>
-                    <TextInput 
-                    style={styles.bubbleText} 
-                    value={item.text} 
-                    multiline={true}
-                    onChangeText={newText => editNote({id: item.id, text: newText}, index)} 
-                />
-                </View>
+            <TouchableOpacity onPress={() => editNote(item.id)}>
+                <NoteItem item={item} index={index} editNote={editNote} />
             </TouchableOpacity>
       </GestureRecognizer>
     );
@@ -71,22 +63,7 @@ const NoteScreen = ({navigation, route}) => {
                     renderItem={renderItem}
             />
             </View>
-            <View 
-                style={styles.inputArea}
-            >
-                <TextInput
-                    style={styles.input}
-                    onChangeText={setInput}
-                    onSubmitEditing={addNote}
-                    value={input}
-                />
-                <TouchableOpacity 
-                    style={styles.addButton}
-                    onPress={addNote}
-                >
-                    <Text style={{fontSize: 18, color: "#FFF"}}>+</Text>
-                </TouchableOpacity>
-            </View>
+            <ChatInput input={input} setInput={setInput} addNote={addNote} />
         </View>
     )
 }
@@ -102,37 +79,4 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
         margin: 10
     },
-    inputArea: {
-        flexDirection: 'row'
-    },
-    input: {
-        height: 40,
-        margin: 12,
-        padding: 10,
-        borderRadius: 20,
-        flex: 1,
-        backgroundColor: "#DDDDDD"
-    },
-    addButton: {
-        height: 40,
-        width: 40,
-        marginVertical: 12,
-        marginRight: 12,
-        borderRadius: 20,
-        flex: 0,
-        backgroundColor: "#0074D9",
-        justifyContent: "center",
-        alignContent: "center",
-        alignItems: "center"
-    },
-    bubble: {
-        borderRadius: 20,
-        margin: 5,
-        padding: 10,
-        backgroundColor: "#0074D9"
-    },
-    bubbleText: {
-        color: "#FFF",
-        padding: 0
-    }
 })
