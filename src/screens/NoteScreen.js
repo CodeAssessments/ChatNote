@@ -1,17 +1,23 @@
 import React from 'react'
-import { StyleSheet, View, FlatList, TextInput, TouchableOpacity, Text } from 'react-native'
+import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import {useSelector} from 'react-redux';
 import NoteItem from '../components/NoteItem';
 import ChatInput from '../components/ChatInput';
+import { useDispatch } from 'react-redux';
+import {setNoteList} from '../store/action'
 
 const NoteScreen = ({navigation, route}) => {
-    const index = route.params?.index;
-    const noteList = useSelector(state => state.notes.noteList[index]) || [];
+    let index = route.params?.index;
+    const noteList = useSelector(state => state.notes.noteList[index] || []);
     const [input, setInput] = React.useState("");
     const [notes, setNotes] = React.useState(noteList);
+    const dispatch = useDispatch();
+    if (index === undefined){
+        index = noteList.length +1;
+    }
 
     React.useEffect(() => {
         navigation.setOptions({ title: "Notes: "+notes.length })
@@ -19,21 +25,23 @@ const NoteScreen = ({navigation, route}) => {
 
     const addNote = () => {
         if(input){
-            setNotes(notes => [{id: uuidv4(), text: input}, ...notes]);
+            const newNote = {id: uuidv4(), text: input}
+            setNotes(notes => [newNote, ...notes]);
             setInput("");
+            dispatch(setNoteList([newNote, ...notes], index))
         }
     }
 
     const editNote = (item, index) => {
         if(notes[index]){
-            notes[index].text = item.text;
+            notes[index].text = item.text; 
             setNotes([...notes])
         }
     }
 
     const deleteNote = (id) => {
         const filteredData = notes.filter(item => item.id !== id);
-        setNotes(filteredData );
+        setNotes(filteredData);
     }
 
     const renderItem = ({ item, index }) => (

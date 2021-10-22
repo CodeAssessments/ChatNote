@@ -1,7 +1,9 @@
-export const GET_NOTELIST = "GET_NOTELIST"
+export const SET_NOTELIST = "SET_NOTELIST"
 
-export const getNoteList = () => {
+export const setNoteList = (newList, index) => {
     return {
-        type: GET_NOTELIST
+        type: SET_NOTELIST,
+        payLoad: newList,
+        index: index
     }
 } 
