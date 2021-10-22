@@ -3,10 +3,9 @@ import { StyleSheet, View, FlatList, TouchableOpacity } from 'react-native'
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
 import GestureRecognizer from 'react-native-swipe-gestures';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import NoteItem from '../components/NoteItem';
 import ChatInput from '../components/ChatInput';
-import { useDispatch } from 'react-redux';
 import {setNoteList} from '../store/action'
 
 const NoteScreen = ({navigation, route}) => {

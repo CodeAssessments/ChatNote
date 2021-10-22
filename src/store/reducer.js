@@ -22,7 +22,7 @@ const noteReducer = (state=initialState, action) => {
             }
             return state;
         case DEL_NOTELIST:
-            state.noteList = state.noteList.splice(index, 1);
+            state.noteList.splice(index, 1);
             return state
         default:
             return state;

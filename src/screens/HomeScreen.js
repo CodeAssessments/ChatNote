@@ -8,12 +8,11 @@ import {
   TouchableOpacity,
   FlatList
 } from 'react-native';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import {delNoteList} from '../store/action'
+import { useIsFocused } from "@react-navigation/native";
 import SquareBtn from '../components/SquareBtn';
 import Note from '../components/Note';
-import {delNoteList} from '../store/action'
-import { useDispatch } from 'react-redux';
-import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = (props) => {
   const dispatch = useDispatch();
