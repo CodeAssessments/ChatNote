@@ -1,4 +1,5 @@
 import { SET_NOTELIST } from "./action";
+import { DEL_NOTELIST } from "./action";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -11,15 +12,18 @@ const initialState = {
 };
 
 const noteReducer = (state=initialState, action) => {
+    const index = action.index;
     switch(action.type){
         case SET_NOTELIST:
-            const index = action.index;
             if(index > state.noteList.length){
                 state.noteList.push(action.payLoad)
             }else{
                 state.noteList[index] = action.payLoad;
             }
             return state;
+        case DEL_NOTELIST:
+            state.noteList = state.noteList.splice(index, 1);
+            return state
         default:
             return state;
     }

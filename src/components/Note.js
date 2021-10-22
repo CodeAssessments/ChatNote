@@ -1,10 +1,11 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 
-const Note = ({data}) => {
+const Note = ({data, index}) => {
+    console.log(data)
     return (
         <View style={styles.noteContainer}>
-            <Text>{data}</Text>
+            <Text>{index+1}. {data[0]?.text}</Text>
             <View style={styles.hr} />
         </View>
     )

@@ -11,13 +11,26 @@ import {
 import {useSelector} from 'react-redux';
 import SquareBtn from '../components/SquareBtn';
 import Note from '../components/Note';
+import {delNoteList} from '../store/action'
+import { useDispatch } from 'react-redux';
+import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = (props) => {
+  const dispatch = useDispatch();
   const noteList = useSelector(state => state.notes.noteList);
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    noteList.forEach((element, index) => {
+      if(element.length === 0){
+        dispatch(delNoteList(index))
+      }
+    });
+  }, [isFocused])
 
   const renderItem = ({item, index}) => (
     <TouchableOpacity onPress={() => props.navigation.navigate('Note', {index})}>
-      <Note data={item[0].text} />
+      <Note data={item} index={index} />
     </TouchableOpacity>
   )
 

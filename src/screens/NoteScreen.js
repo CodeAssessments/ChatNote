@@ -42,6 +42,7 @@ const NoteScreen = ({navigation, route}) => {
     const deleteNote = (id) => {
         const filteredData = notes.filter(item => item.id !== id);
         setNotes(filteredData);
+        dispatch(setNoteList(filteredData, index))
     }
 
     const renderItem = ({ item, index }) => (
