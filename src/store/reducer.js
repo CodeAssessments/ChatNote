@@ -1,12 +1,11 @@
 import { SET_NOTELIST } from "./action";
 import { DEL_NOTELIST } from "./action";
-import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
     noteList: [
         [
-            {id: uuidv4(), text: "click to edit"},
-            {id: uuidv4(), text: "drag to delete"},
+            {id: "123e4567-e89b-12d3-a456-426614174000", text: "click to edit"},
+            {id: "123e4567-e89b-12d3-a456-426614174001", text: "drag to delete"},
         ]
     ]
 };

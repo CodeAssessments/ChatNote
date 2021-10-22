@@ -8,7 +8,6 @@ export const setNoteList = (newList, index) => {
         index: index
     }
 } 
-
 export const delNoteList = (index) => {
     return {
         type: DEL_NOTELIST,
